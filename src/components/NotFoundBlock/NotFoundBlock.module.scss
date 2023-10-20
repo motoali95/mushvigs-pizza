@@ -1,0 +1,25 @@
+.root {
+  padding: 150px;
+  margin: 0 auto;
+  text-align: center;
+  @media (max-width: 600px) {
+    padding: 0;
+  }
+  h1 {
+    @media (max-width: 600px) {
+      font-size: 20px;
+    }
+  }
+  span {
+    font-size: 64px;
+    @media (max-width: 600px) {
+      font-size: 30px;
+    }
+  }
+}
+.description {
+  font-size: 22px;
+  @media (max-width: 600px) {
+    font-size: 10px;
+  }
+}
