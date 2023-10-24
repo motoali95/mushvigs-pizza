@@ -1,11 +1,27 @@
-import React from 'react';
+import React, {useState} from 'react';
+import Outline from "../Outline.svg";
 import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import CartItem from '../components/CartItem';
 import { clearItem } from '../redux/slices/cartSlice';
 import CartEmpty from '../components/CartEmpty';
+import Modal from "../components/Modal";
+
 
 const Cart = () => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [inputValue, setInputValue] = useState("");
+  const handleInputChange = (event) => {
+    setInputValue(event.target.value);
+  };
+  const openModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setInputValue("");
+  };
   const dispatch = useDispatch();
   const { totalPrice, items } = useSelector((state) => state.cart);
   const totalCount = items.reduce((sum, item) => sum + item.count, 0);
@@ -22,6 +38,34 @@ const Cart = () => {
 
   return (
     <div className="container container--cart">
+      <Modal isOpen={isModalOpen} onClose={closeModal}>
+        
+
+      <img
+          onClick={() => closeModal()}
+          className="close-btn"
+          src={Outline}
+          alt=""
+        />
+        <h2>Начни прямо сейчас!</h2>
+
+        <p>
+          Получи все нужные навыки для заработка <br />
+          на NFT всего за 28 дней!
+        </p>
+        <input
+          placeholder="Ваш e-mail"
+          type="email"
+          value={inputValue}
+          onChange={handleInputChange}
+        />
+        <button
+          className="close-button"
+          onClick={inputValue.includes("@") ? closeModal : openModal}
+        >
+          Оплатить
+        </button>
+      </Modal>
       <div class="cart">
         <div class="cart__top">
           <h2 class="content__title">
@@ -122,8 +166,8 @@ const Cart = () => {
 
               <span>Вернуться назад</span>
             </Link>
-            <div class="button pay-btn">
-              <span>Оплатить сейчас</span>
+            <div onClick={() => openModal()} class="button pay-btn">
+              <span >Оплатить сейчас</span>
             </div>
           </div>
         </div>
