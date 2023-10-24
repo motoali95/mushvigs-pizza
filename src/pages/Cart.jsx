@@ -10,9 +10,18 @@ import Modal from "../components/Modal";
 
 const Cart = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [inputValue, setInputValue] = useState("");
+  const [inputTg, setInputTg] = useState("");
+  const [inputJbr, setInputJbr] = useState("");
+  const [inputCity, setInputCity] = useState("");
+  const [inputDistrict, setInputDistrict] = useState("");
+  const [inputPoint, setInputPoint] = useState("");
+  const [currentModal, setCurrentModal] = useState(1)
   const handleInputChange = (event) => {
-    setInputValue(event.target.value);
+    setInputTg(event.target.value);
+    setInputJbr(event.target.value);
+    setInputCity(event.target.value);
+    setInputDistrict(event.target.value);
+    setInputPoint(event.target.value);
   };
   const openModal = () => {
     setIsModalOpen(true);
@@ -20,8 +29,13 @@ const Cart = () => {
 
   const closeModal = () => {
     setIsModalOpen(false);
-    setInputValue("");
+    setInputTg("");
   };
+
+  const nextModal = () => {
+    setCurrentModal(2);
+    setInputTg("");
+  }
   const dispatch = useDispatch();
   const { totalPrice, items } = useSelector((state) => state.cart);
   const totalCount = items.reduce((sum, item) => sum + item.count, 0);
@@ -39,36 +53,72 @@ const Cart = () => {
   return (
     <div className="container container--cart">
       <Modal isOpen={isModalOpen} onClose={closeModal}>
-        
 
-      <img
-          onClick={() => closeModal()}
-          className="close-btn"
-          src={Outline}
-          alt=""
-        />
-        <h2>Начни прямо сейчас!</h2>
 
-        <p>
+        {currentModal === 1 ?
+           <> <img
+                onClick={() => closeModal()}
+                className="close-btn"
+                src={Outline}
+                alt=""
+            />
+            <h2>Начни прямо сейчас!</h2>
+
+          <p>
           Получи все нужные навыки для заработка <br />
           на NFT всего за 28 дней!
-        </p>
-        <input
+          </p>
+          <input
           placeholder="Ваш e-mail"
-          type="email"
-          value={inputValue}
+          // type="email"
+          value={inputTg}
           onChange={handleInputChange}
-        />
-        <button
+          />
+             <input
+                 placeholder="Ваш e-mail"
+                 // type="email"
+                 value={inputJbr}
+                 onChange={handleInputChange}
+             />
+             <input
+                 placeholder="Ваш e-mail"
+                 // type="email"
+                 value={inputCity}
+                 onChange={handleInputChange}
+             />
+             <input
+                 placeholder="Ваш e-mail"
+                 // type="email"
+                 value={inputDistrict}
+                 onChange={handleInputChange}
+             />
+             <input
+                 placeholder="Ваш e-mail"
+                 // type="email"
+                 value={inputPoint}
+                 onChange={handleInputChange}
+             />
+
+          <button
           className="close-button"
-          onClick={inputValue.includes("@") ? closeModal : openModal}
-        >
+          onClick={inputTg.includes("@") ? nextModal : openModal}
+          >
           Оплатить
-        </button>
+          </button>
+           </>
+            :
+            <div><h2>Salamuchkye</h2>
+            <button
+            onClick={() => setCurrentModal(1)}
+            >
+              Назад
+            </button>
+            </div>
+        }
       </Modal>
-      <div class="cart">
-        <div class="cart__top">
-          <h2 class="content__title">
+      <div className="cart">
+        <div className="cart__top">
+          <h2 className="content__title">
             <svg
               width="18"
               height="18"
@@ -96,7 +146,7 @@ const Cart = () => {
             </svg>
             Корзина
           </h2>
-          <div onClick={onClickClear} class="cart__clear">
+          <div onClick={onClickClear} className="cart__clear">
             <svg
               width="20"
               height="20"
@@ -132,13 +182,13 @@ const Cart = () => {
             <span>Очистить корзину</span>
           </div>
         </div>
-        <div class="content__items">
+        <div className="content__items">
           {items.map((item) => (
             <CartItem {...item} />
           ))}
         </div>
-        <div class="cart__bottom">
-          <div class="cart__bottom-details">
+        <div className="cart__bottom">
+          <div className="cart__bottom-details">
             <span>
               {' '}
               Всего пицц: <b>{totalCount} шт.</b>{' '}
@@ -148,8 +198,8 @@ const Cart = () => {
               Сумма заказа: <b>{totalPrice} ₽</b>{' '}
             </span>
           </div>
-          <div class="cart__bottom-buttons">
-            <Link to="/" class="button button--outline button--add go-back-btn">
+          <div className="cart__bottom-buttons">
+            <Link to="/" className="button button--outline button--add go-back-btn">
               <svg
                 width="8"
                 height="14"
@@ -166,7 +216,7 @@ const Cart = () => {
 
               <span>Вернуться назад</span>
             </Link>
-            <div onClick={() => openModal()} class="button pay-btn">
+            <div onClick={() => openModal()} className="button pay-btn">
               <span >Оплатить сейчас</span>
             </div>
           </div>

@@ -21,7 +21,7 @@
     padding: 20px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
     width: 500px;
-    height: 325px;
+    height: 550px;
     flex-shrink: 0;
     border-radius: 30px;
     background: radial-gradient(
@@ -77,7 +77,7 @@
       cursor: pointer;
     }
     input {
-      position: absolute;
+      //position: absolute;
       display: flex;
       width: 330px;
       height: 40px;
