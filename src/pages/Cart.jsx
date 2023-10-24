@@ -1,12 +1,11 @@
-import React, {useState} from 'react';
+import React, { useState } from "react";
 import Outline from "../Outline.svg";
-import { Link } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
-import CartItem from '../components/CartItem';
-import { clearItem } from '../redux/slices/cartSlice';
-import CartEmpty from '../components/CartEmpty';
+import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import CartItem from "../components/CartItem";
+import { clearItem } from "../redux/slices/cartSlice";
+import CartEmpty from "../components/CartEmpty";
 import Modal from "../components/Modal";
-
 
 const Cart = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -15,12 +14,20 @@ const Cart = () => {
   const [inputCity, setInputCity] = useState("");
   const [inputDistrict, setInputDistrict] = useState("");
   const [inputPoint, setInputPoint] = useState("");
-  const [currentModal, setCurrentModal] = useState(1)
-  const handleInputChange = (event) => {
+  const [currentModal, setCurrentModal] = useState(1);
+  const tgInputChange = (event) => {
     setInputTg(event.target.value);
+  };
+  const jbrInputChange = (event) => {
     setInputJbr(event.target.value);
+  };
+  const cityInputChange = (event) => {
     setInputCity(event.target.value);
+  };
+  const districtInputChange = (event) => {
     setInputDistrict(event.target.value);
+  };
+  const pointInputChange = (event) => {
     setInputPoint(event.target.value);
   };
   const openModal = () => {
@@ -30,18 +37,27 @@ const Cart = () => {
   const closeModal = () => {
     setIsModalOpen(false);
     setInputTg("");
+    setInputJbr("");
+    setInputCity("");
+    setInputDistrict("");
+    setInputPoint("");
   };
 
   const nextModal = () => {
     setCurrentModal(2);
     setInputTg("");
-  }
+    setInputJbr("");
+    setInputCity("");
+    setInputDistrict("");
+    setInputPoint("");
+    setCurrentModal("");
+  };
   const dispatch = useDispatch();
   const { totalPrice, items } = useSelector((state) => state.cart);
   const totalCount = items.reduce((sum, item) => sum + item.count, 0);
 
   const onClickClear = () => {
-    if (window.confirm('Очистить корзину?')) {
+    if (window.confirm("Очистить корзину?")) {
       dispatch(clearItem());
     }
   };
@@ -53,68 +69,70 @@ const Cart = () => {
   return (
     <div className="container container--cart">
       <Modal isOpen={isModalOpen} onClose={closeModal}>
-
-
-        {currentModal === 1 ?
-           <> <img
-                onClick={() => closeModal()}
-                className="close-btn"
-                src={Outline}
-                alt=""
+        {currentModal === 1 ? (
+          <>
+            {" "}
+            <img
+              onClick={() => closeModal()}
+              className="close-btn"
+              src={Outline}
+              alt=""
             />
             <h2>Начни прямо сейчас!</h2>
-
-          <p>
-          Получи все нужные навыки для заработка <br />
-          на NFT всего за 28 дней!
-          </p>
-          <input
-          placeholder="Ваш e-mail"
-          // type="email"
-          value={inputTg}
-          onChange={handleInputChange}
-          />
-             <input
-                 placeholder="Ваш e-mail"
-                 // type="email"
-                 value={inputJbr}
-                 onChange={handleInputChange}
-             />
-             <input
-                 placeholder="Ваш e-mail"
-                 // type="email"
-                 value={inputCity}
-                 onChange={handleInputChange}
-             />
-             <input
-                 placeholder="Ваш e-mail"
-                 // type="email"
-                 value={inputDistrict}
-                 onChange={handleInputChange}
-             />
-             <input
-                 placeholder="Ваш e-mail"
-                 // type="email"
-                 value={inputPoint}
-                 onChange={handleInputChange}
-             />
-
-          <button
-          className="close-button"
-          onClick={inputTg.includes("@") ? nextModal : openModal}
-          >
-          Оплатить
-          </button>
-           </>
-            :
-            <div><h2>Salamuchkye</h2>
+            <p>
+              Получи все нужные навыки для заработка <br />
+              на NFT всего за 28 дней!
+            </p>
+            <input
+              placeholder="your TG account. ex: @pussylicker"
+              type="text"
+              value={inputTg}
+              onChange={tgInputChange}
+            />
+            <input
+              placeholder="your Jabber if u have"
+              type="text"
+              value={inputJbr}
+              onChange={jbrInputChange}
+            />
+            <input
+              placeholder="City ex: New-York"
+              type="text"
+              value={inputCity}
+              onChange={cityInputChange}
+            />
+            <input
+              placeholder="District ex: Harlem"
+              type="text"
+              value={inputDistrict}
+              onChange={districtInputChange}
+            />
+            <input
+              placeholder="Point ex: Cuttaz Barbershop"
+              type="text"
+              value={inputPoint}
+              onChange={pointInputChange}
+            />
             <button
-            onClick={() => setCurrentModal(1)}
+              className="close-button"
+              onClick={
+                inputTg.includes("@") &&
+                inputJbr.length > 0 &&
+                inputCity.length > 0 &&
+                inputPoint.length > 0
+                  ? nextModal
+                  : openModal
+              }
             >
-              Назад
+              Оплатить
             </button>
-            </div>
-        }
+          </>
+        ) : (
+          <div>
+            <h2>Salamuchkye</h2>
+            <button onClick={() => setCurrentModal(1)}>Назад</button>
+          </div>
+        )}
       </Modal>
       <div className="cart">
         <div className="cart__top">
@@ -124,25 +142,29 @@ const Cart = () => {
               height="18"
               viewBox="0 0 18 18"
               fill="none"
-              xmlns="http://www.w3.org/2000/svg">
+              xmlns="http://www.w3.org/2000/svg"
+            >
               <path
                 d="M6.33333 16.3333C7.06971 16.3333 7.66667 15.7364 7.66667 15C7.66667 14.2636 7.06971 13.6667 6.33333 13.6667C5.59695 13.6667 5 14.2636 5 15C5 15.7364 5.59695 16.3333 6.33333 16.3333Z"
                 stroke="white"
                 stroke-width="1.8"
                 stroke-linecap="round"
-                stroke-linejoin="round"></path>
+                stroke-linejoin="round"
+              ></path>
               <path
                 d="M14.3333 16.3333C15.0697 16.3333 15.6667 15.7364 15.6667 15C15.6667 14.2636 15.0697 13.6667 14.3333 13.6667C13.597 13.6667 13 14.2636 13 15C13 15.7364 13.597 16.3333 14.3333 16.3333Z"
                 stroke="white"
                 stroke-width="1.8"
                 stroke-linecap="round"
-                stroke-linejoin="round"></path>
+                stroke-linejoin="round"
+              ></path>
               <path
                 d="M4.78002 4.99999H16.3334L15.2134 10.5933C15.1524 10.9003 14.9854 11.176 14.7417 11.3722C14.4979 11.5684 14.1929 11.6727 13.88 11.6667H6.83335C6.50781 11.6694 6.1925 11.553 5.94689 11.3393C5.70128 11.1256 5.54233 10.8295 5.50002 10.5067L4.48669 2.82666C4.44466 2.50615 4.28764 2.21182 4.04482 1.99844C3.80201 1.78505 3.48994 1.66715 3.16669 1.66666H1.66669"
                 stroke="white"
                 stroke-width="1.8"
                 stroke-linecap="round"
-                stroke-linejoin="round"></path>
+                stroke-linejoin="round"
+              ></path>
             </svg>
             Корзина
           </h2>
@@ -152,31 +174,36 @@ const Cart = () => {
               height="20"
               viewBox="0 0 20 20"
               fill="none"
-              xmlns="http://www.w3.org/2000/svg">
+              xmlns="http://www.w3.org/2000/svg"
+            >
               <path
                 d="M2.5 5H4.16667H17.5"
                 stroke="#B6B6B6"
                 stroke-width="1.2"
                 stroke-linecap="round"
-                stroke-linejoin="round"></path>
+                stroke-linejoin="round"
+              ></path>
               <path
                 d="M6.66663 5.00001V3.33334C6.66663 2.89131 6.84222 2.46739 7.15478 2.15483C7.46734 1.84227 7.89127 1.66667 8.33329 1.66667H11.6666C12.1087 1.66667 12.5326 1.84227 12.8451 2.15483C13.1577 2.46739 13.3333 2.89131 13.3333 3.33334V5.00001M15.8333 5.00001V16.6667C15.8333 17.1087 15.6577 17.5326 15.3451 17.8452C15.0326 18.1577 14.6087 18.3333 14.1666 18.3333H5.83329C5.39127 18.3333 4.96734 18.1577 4.65478 17.8452C4.34222 17.5326 4.16663 17.1087 4.16663 16.6667V5.00001H15.8333Z"
                 stroke="#B6B6B6"
                 stroke-width="1.2"
                 stroke-linecap="round"
-                stroke-linejoin="round"></path>
+                stroke-linejoin="round"
+              ></path>
               <path
                 d="M8.33337 9.16667V14.1667"
                 stroke="#B6B6B6"
                 stroke-width="1.2"
                 stroke-linecap="round"
-                stroke-linejoin="round"></path>
+                stroke-linejoin="round"
+              ></path>
               <path
                 d="M11.6666 9.16667V14.1667"
                 stroke="#B6B6B6"
                 stroke-width="1.2"
                 stroke-linecap="round"
-                stroke-linejoin="round"></path>
+                stroke-linejoin="round"
+              ></path>
             </svg>
 
             <span>Очистить корзину</span>
@@ -190,34 +217,39 @@ const Cart = () => {
         <div className="cart__bottom">
           <div className="cart__bottom-details">
             <span>
-              {' '}
-              Всего пицц: <b>{totalCount} шт.</b>{' '}
+              {" "}
+              Всего пицц: <b>{totalCount} шт.</b>{" "}
             </span>
             <span>
-              {' '}
-              Сумма заказа: <b>{totalPrice} ₽</b>{' '}
+              {" "}
+              Сумма заказа: <b>{totalPrice} ₽</b>{" "}
             </span>
           </div>
           <div className="cart__bottom-buttons">
-            <Link to="/" className="button button--outline button--add go-back-btn">
+            <Link
+              to="/"
+              className="button button--outline button--add go-back-btn"
+            >
               <svg
                 width="8"
                 height="14"
                 viewBox="0 0 8 14"
                 fill="none"
-                xmlns="http://www.w3.org/2000/svg">
+                xmlns="http://www.w3.org/2000/svg"
+              >
                 <path
                   d="M7 13L1 6.93015L6.86175 1"
                   stroke="#D3D3D3"
                   stroke-width="1.5"
                   stroke-linecap="round"
-                  stroke-linejoin="round"></path>
+                  stroke-linejoin="round"
+                ></path>
               </svg>
 
               <span>Вернуться назад</span>
             </Link>
             <div onClick={() => openModal()} className="button pay-btn">
-              <span >Оплатить сейчас</span>
+              <span>Оплатить сейчас</span>
             </div>
           </div>
         </div>
