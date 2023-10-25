@@ -6,6 +6,8 @@ import CartItem from "../components/CartItem";
 import { clearItem } from "../redux/slices/cartSlice";
 import CartEmpty from "../components/CartEmpty";
 import Modal from "../components/Modal";
+import QrCode from "../qr-code.jpg";
+
 
 const Cart = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -117,7 +119,7 @@ const Cart = () => {
               className="close-button"
               onClick={
                 inputTg.includes("@") &&
-                inputJbr.length > 0 &&
+                // inputJbr.length > 0 && ..закоментил потому что считаю что он не у всех есть)
                 inputCity.length > 0 &&
                 inputPoint.length > 0
                   ? nextModal
@@ -128,8 +130,11 @@ const Cart = () => {
             </button>
           </>
         ) : (
-          <div>
-            <h2>Salamuchkye</h2>
+          <div className="sec-modal">
+            <h1>
+            Your parcel will be sent to the location you specified after payment is received. A photo of the place where the parcel was left will be sent to you on Telegram.
+            </h1>
+            <img src={QrCode} alt="" />
             <button onClick={() => setCurrentModal(1)}>Назад</button>
           </div>
         )}
