@@ -17,6 +17,8 @@ const Cart = () => {
   const [inputDistrict, setInputDistrict] = useState("");
   const [inputPoint, setInputPoint] = useState("");
   const [currentModal, setCurrentModal] = useState(1);
+
+  
   const tgInputChange = (event) => {
     setInputTg(event.target.value);
   };
@@ -133,7 +135,7 @@ const Cart = () => {
           <div className="sec-modal">
             <h1>
             Your parcel will be sent to the location you specified after payment is received. A photo of the place where the parcel was left will be sent to you on Telegram.
-            </h1>
+            </h1 >
             <img src={QrCode} alt="" />
             <button onClick={() => setCurrentModal(1)}>Назад</button>
           </div>

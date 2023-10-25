@@ -1,12 +1,23 @@
-import Search from './Search';
-import { Link } from 'react-router-dom';
-import logosvg from '../assets/img/pizza-logo.svg';
-import { useSelector } from 'react-redux';
-import React from 'react';
+import Search from "./Search";
+import { Link } from "react-router-dom";
+import logosvg from "../assets/img/pizza-logo.svg";
+import { useSelector } from "react-redux";
+import React, { useEffect, useRef } from "react";
 
 function Header() {
   const { items, totalPrice } = useSelector((state) => state.cart);
   const totalCount = items.reduce((sum, item) => sum + item.count, 0);
+  const isMounted = useRef(false);
+
+  useEffect(() => {
+    if (isMounted.current) {
+      const itemsJson = JSON.stringify(items);
+      const priceJson = JSON.stringify(totalPrice);
+      localStorage.setItem("cart", itemsJson);
+      localStorage.setItem("price", priceJson);
+    }
+    isMounted.current = true;
+  }, [items, totalPrice]);
 
   return (
     <div className="header">
@@ -30,7 +41,8 @@ function Header() {
               height="18"
               viewBox="0 0 18 18"
               fill="none"
-              xmlns="http://www.w3.org/2000/svg">
+              xmlns="http://www.w3.org/2000/svg"
+            >
               <path
                 d="M6.33333 16.3333C7.06971 16.3333 7.66667 15.7364 7.66667 15C7.66667 14.2636 7.06971 13.6667 6.33333 13.6667C5.59695 13.6667 5 14.2636 5 15C5 15.7364 5.59695 16.3333 6.33333 16.3333Z"
                 stroke="white"
