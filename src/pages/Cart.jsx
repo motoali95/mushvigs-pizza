@@ -70,6 +70,32 @@ const Cart = () => {
     return <CartEmpty />;
   }
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const data = {
+    inputTg,
+    inputJbr,
+    inputCity,
+    inputDistrict,
+    inputPoint
+    };
+    // Отправьте данные на ваш сервер PHP здесь
+    const response = await fetch('../backend/index.php', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (response.status === 200) {
+      alert('Данные отправлены на почту.');
+    } else {
+      alert('Произошла ошибка при отправке данных.');
+    }
+    setCurrentModal(1)
+  };
+
   return (
     <div className="container container--cart">
       <Modal isOpen={isModalOpen} onClose={closeModal}>
@@ -138,6 +164,7 @@ const Cart = () => {
             </h1 >
             <img src={QrCode} alt="" />
             <button onClick={() => setCurrentModal(1)}>Назад</button>
+            <button onClick={() => handleSubmit()}>Оплатить</button>
           </div>
         )}
       </Modal>
