@@ -80,7 +80,7 @@ const Cart = () => {
     inputPoint
     };
     // Отправьте данные на ваш сервер PHP здесь
-    const response = await fetch('../backend/index.php', {
+    const response = await fetch('../../backend/index.php', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
